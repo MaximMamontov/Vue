@@ -49,7 +49,7 @@
                   v-for="link in links"
                   :key="link.title"
                   :to="link.url"
-                  flat
+                  text
           >
             <v-icon left>{{link.icon}}</v-icon>
             {{link.title}}
