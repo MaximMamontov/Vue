@@ -1,46 +1,28 @@
 <template>
-  <v-container
-          class="fill-height"
-          fluid
-  >
-    <v-row
-            align="center"
-            justify="center"
-    >
-      <v-col
-              cols="12"
-              sm="8"
-              md="6"
-      >
+  <v-container fluid fill-height>
+    <v-layout align-center justify-center>
+      <v-flex xs12 sm8 md6>
         <v-card class="elevation-12">
-          <v-toolbar
-                  color="primary"
-                  dark
-                  flat
-          >
+          <v-toolbar dark color="primary">
             <v-toolbar-title>Login form</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
-            <v-form  ref="form"
-                     v-model="valid"
-                     validation>
+            <v-form v-model="valid" ref="form" validation>
               <v-text-field
-                      label="Email"
+                      prepend-icon="person"
                       name="email"
-                      prepend-icon="mdi-account"
+                      label="Email"
                       type="email"
                       v-model="email"
                       :rules="emailRules"
               ></v-text-field>
-
               <v-text-field
-                      id="password"
-                      label="Password"
+                      prepend-icon="lock"
                       name="password"
-                      prepend-icon="mdi-lock"
+                      label="Password"
                       type="password"
-                      v-model="password"
                       :counter="6"
+                      v-model="password"
                       :rules="passwordRules"
               ></v-text-field>
             </v-form>
@@ -55,46 +37,54 @@
             >Login</v-btn>
           </v-card-actions>
         </v-card>
-      </v-col>
-    </v-row>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
 <script>
+  const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+
   export default {
-    data(){
-      return{
-        email:'',
-        password:'',
+    data () {
+      return {
+        email: '',
+        password: '',
         valid: false,
         emailRules: [
           v => !!v || 'E-mail is required',
-          v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+          v => emailRegex.test(v) || 'E-mail must be valid'
         ],
         passwordRules: [
           v => !!v || 'Password is required',
-          v => (v && v.length >= 6) || 'Password mast have more then six sympols'
+          v => (v && v.length >= 6) || 'Password must be equal or more than 6 characters'
         ]
       }
     },
     computed: {
-      loading(){
+      loading () {
         return this.$store.getters.loading
       }
     },
     methods: {
-      onSubmit(){
-        if(this.$refs.form.validate()){
+      onSubmit () {
+        if (this.$refs.form.validate()) {
           const user = {
             email: this.email,
             password: this.password
           }
+
           this.$store.dispatch('loginUser', user)
-          .then(()=>{
-            this.$router.push('/')
-          })
-          .catch(()=>{})
+                  .then(() => {
+                    this.$router.push('/')
+                  })
+                  .catch(() => {})
         }
+      }
+    },
+    created () {
+      if (this.$route.query['loginError']) {
+        this.$store.dispatch('setError', 'Please log in to access this page.')
       }
     }
   }

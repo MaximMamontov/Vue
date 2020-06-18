@@ -5,6 +5,7 @@ import Ad from "../components/Ads/Ad";
 import AdList from "../components/Ads/AdList";
 import NewAd from "../components/Ads/NewAd";
 import Login from "../components/Auth/Login";
+import AuthGuard from './auth-guard';
 import Registration from "../components/Auth/Registration";
 import Orders from "../components/User/Orders";
 
@@ -26,12 +27,14 @@ export default new Router({
         {
             path:'/list',
             name:'list',
-            component: AdList
+            component: AdList,
+            beforeEnter: AuthGuard
         },
         {
             path:'/new',
             name:'newAd',
-            component: NewAd
+            component: NewAd,
+            beforeEnter: AuthGuard
         },
         {
             path:'/login',
@@ -46,7 +49,8 @@ export default new Router({
         {
             path:'/orders',
             name:'orders',
-            component: Orders
+            component: Orders,
+            beforeEnter: AuthGuard
         },
     ],
     mode: 'history'
