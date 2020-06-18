@@ -36,7 +36,11 @@
         class="hidden-md-and-up"
         ></v-app-bar-nav-icon>
 
-        <v-toolbar-title>Ad Application</v-toolbar-title>
+        <v-toolbar-title>
+          <router-link to="/" tag="span" class="pointer">
+            Ad application
+          </router-link>
+        </v-toolbar-title>
 
         <v-spacer></v-spacer>
 
@@ -79,3 +83,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .pointer {
+    cursor: pointer;
+  }
+</style>
